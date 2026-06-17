@@ -16,15 +16,17 @@ A terminal dashboard that watches a GitHub or Bitbucket repo's **Actions / Pull 
 ## Install
 
 ```bash
-# Prebuilt binary (no Rust) — macOS / Linux
+# Prebuilt binary (no Rust) — simplest
 curl -fsSL https://raw.githubusercontent.com/polarian/argus/master/install.sh | sh
 
-# With Cargo
-cargo binstall argus                                    # prebuilt (needs cargo-binstall)
-cargo install --git https://github.com/polarian/argus   # from source
+# With Cargo — install from the git repo (see the note below)
+cargo install --git https://github.com/polarian/argus            # build from source
+cargo binstall --git https://github.com/polarian/argus argus     # prebuilt (needs cargo-binstall)
 ```
 
-`cargo binstall` requires [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) (`cargo install cargo-binstall`, or via Homebrew / its own installer). Or build locally with `cargo install --path .` (or grab a tarball from [Releases](https://github.com/polarian/argus/releases)). Binaries are CLI-fetched, so **macOS doesn't quarantine them — no signing/notarization needed.**
+> ⚠️ Install from the **`--git` URL above**, not `cargo install argus` / `cargo binstall argus` — the bare `argus` on crates.io is an **unrelated project**.
+
+`cargo binstall` requires [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) (`cargo install cargo-binstall`). Or build locally with `cargo install --path .`, or grab a tarball from [Releases](https://github.com/polarian/argus/releases). Binaries are CLI-fetched, so **macOS doesn't quarantine them — no signing/notarization needed.**
 
 > **Backend CLI** is installed separately — only the one you use: [`gh`](https://cli.github.com/) for GitHub, [`bkt`](https://github.com/avivsinai/bitbucket-cli) for Bitbucket. argus guides setup on first run.
 
