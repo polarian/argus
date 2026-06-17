@@ -20,11 +20,11 @@ A terminal dashboard that watches a GitHub or Bitbucket repo's **Actions / Pull 
 curl -fsSL https://raw.githubusercontent.com/polarian/argus/master/install.sh | sh
 
 # With Cargo — install from the git repo (see the note below)
-cargo install --git https://github.com/polarian/argus            # build from source
-cargo binstall --git https://github.com/polarian/argus argus     # prebuilt (needs cargo-binstall)
+cargo install --git https://github.com/polarian/argus              # build from source
+cargo binstall --git https://github.com/polarian/argus argus-tui   # prebuilt (needs cargo-binstall)
 ```
 
-> ⚠️ Install from the **`--git` URL above**, not `cargo install argus` / `cargo binstall argus` — the bare `argus` on crates.io is an **unrelated project**.
+> ⚠️ Not published to crates.io yet — install via the **`--git` URL above**. (The crate is `argus-tui`; the bare `argus` on crates.io is an unrelated project.)
 
 `cargo binstall` requires [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) (`cargo install cargo-binstall`). Or build locally with `cargo install --path .`, or grab a tarball from [Releases](https://github.com/polarian/argus/releases). Binaries are CLI-fetched, so **macOS doesn't quarantine them — no signing/notarization needed.**
 

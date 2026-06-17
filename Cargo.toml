@@ -1,5 +1,5 @@
 [package]
-name = "argus"
+name = "argus-tui"
 version = "0.1.2"
 edition = "2024"
 description = "Real-time GitHub/Bitbucket repository monitoring TUI, powered by the gh/bkt CLIs"
