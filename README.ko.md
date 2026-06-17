@@ -22,14 +22,20 @@
 
 ## 설치
 
-```bash
-# Cargo로 (크레이트명은 argus-tui, 명령은 arg)
-cargo binstall argus-tui    # 미리빌드 바이너리 (cargo-binstall 필요)
-cargo install argus-tui     # 소스 빌드
+**Rust 불필요** — macOS / Linux용 미리 빌드 바이너리(설치 위치가 `PATH`에 없으면 설치기가 알려줍니다):
 
-# 미리 빌드된 바이너리, Rust 불필요 — macOS / Linux
+```bash
 curl -fsSL https://raw.githubusercontent.com/polarian/argus/master/install.sh | sh
 ```
+
+**Cargo로** (크레이트명 `argus-tui`, 명령은 `arg`):
+
+```bash
+cargo binstall argus-tui    # 미리빌드 바이너리 (cargo-binstall 필요)
+cargo install argus-tui     # 소스 빌드
+```
+
+> **Rust가 아직 없다면?** [rustup](https://rustup.rs)으로 설치하세요 — `~/.cargo/bin`을 `PATH`에 자동 추가해 설치된 `arg`를 바로 찾습니다. (Homebrew의 `rust`는 이 작업을 안 해서 `cargo install`한 바이너리가 `PATH`에 안 잡힙니다.)
 
 `cargo binstall`은 [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall)이 먼저 설치돼 있어야 합니다(`cargo install cargo-binstall`). 최신 개발본은 `cargo install --git https://github.com/polarian/argus`. 또는 [Releases](https://github.com/polarian/argus/releases)에서 tar.gz. 바이너리를 CLI로 받으므로 **macOS가 격리하지 않습니다 — 서명·공증 불필요.**
 

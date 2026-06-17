@@ -22,14 +22,20 @@ A terminal dashboard that watches a GitHub or Bitbucket repo's **Actions / Pull 
 
 ## Install
 
-```bash
-# With Cargo (crate is argus-tui; the command is arg)
-cargo binstall argus-tui    # prebuilt binary (needs cargo-binstall)
-cargo install argus-tui     # build from source
+**No Rust required** — prebuilt binary for macOS / Linux (the installer flags it if its dir isn't on your `PATH`):
 
-# Prebuilt binary, no Rust — macOS / Linux
+```bash
 curl -fsSL https://raw.githubusercontent.com/polarian/argus/master/install.sh | sh
 ```
+
+**With Cargo** (crate is `argus-tui`, the command is `arg`):
+
+```bash
+cargo binstall argus-tui    # prebuilt binary (needs cargo-binstall)
+cargo install argus-tui     # build from source
+```
+
+> **No Rust toolchain yet?** Install it with [rustup](https://rustup.rs) — it adds `~/.cargo/bin` to your `PATH` automatically, so the installed `arg` is found. (Homebrew's `rust` doesn't, leaving `cargo install`'d binaries off your `PATH`.)
 
 `cargo binstall` requires [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) (`cargo install cargo-binstall`). For the bleeding edge, `cargo install --git https://github.com/polarian/argus`. Or grab a tarball from [Releases](https://github.com/polarian/argus/releases). Binaries are CLI-fetched, so **macOS doesn't quarantine them — no signing/notarization needed.**
 
