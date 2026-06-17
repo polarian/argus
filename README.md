@@ -16,19 +16,19 @@ A terminal dashboard that watches a GitHub or Bitbucket repo's **Actions / Pull 
 ## Install
 
 ```bash
-# Prebuilt binary (no Rust) — simplest
-curl -fsSL https://raw.githubusercontent.com/polarian/argus/master/install.sh | sh
+# With Cargo (crate is argus-tui; the command is arg)
+cargo binstall argus-tui    # prebuilt binary (needs cargo-binstall)
+cargo install argus-tui     # build from source
 
-# With Cargo — install from the git repo (see the note below)
-cargo install --git https://github.com/polarian/argus              # build from source
-cargo binstall --git https://github.com/polarian/argus argus-tui   # prebuilt (needs cargo-binstall)
+# Prebuilt binary, no Rust — macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/polarian/argus/master/install.sh | sh
 ```
 
-`cargo binstall` requires [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) (`cargo install cargo-binstall`). Or build locally with `cargo install --path .`, or grab a tarball from [Releases](https://github.com/polarian/argus/releases). Binaries are CLI-fetched, so **macOS doesn't quarantine them — no signing/notarization needed.**
+`cargo binstall` requires [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) (`cargo install cargo-binstall`). For the bleeding edge, `cargo install --git https://github.com/polarian/argus`. Or grab a tarball from [Releases](https://github.com/polarian/argus/releases). Binaries are CLI-fetched, so **macOS doesn't quarantine them — no signing/notarization needed.**
 
 > **Backend CLI** is installed separately — only the one you use: [`gh`](https://cli.github.com/) for GitHub, [`bkt`](https://github.com/avivsinai/bitbucket-cli) for Bitbucket. argus guides setup on first run.
 
-**Updating:** a `⬆ vX.Y.Z available` banner appears when a newer release exists. Update with `cargo install-update -a`, `brew upgrade`, or by re-running the installer.
+**Updating:** a `⬆ vX.Y.Z available` banner appears when a newer release exists. Update with `cargo install-update -a` (for cargo/binstall installs) or by re-running the curl installer.
 
 ## Usage
 

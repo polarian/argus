@@ -16,19 +16,19 @@
 ## 설치
 
 ```bash
-# 미리 빌드된 바이너리 (Rust 불필요) — 가장 간단
-curl -fsSL https://raw.githubusercontent.com/polarian/argus/master/install.sh | sh
+# Cargo로 (크레이트명은 argus-tui, 명령은 arg)
+cargo binstall argus-tui    # 미리빌드 바이너리 (cargo-binstall 필요)
+cargo install argus-tui     # 소스 빌드
 
-# Cargo로 — git 저장소에서 설치 (아래 주의 참고)
-cargo install --git https://github.com/polarian/argus              # 소스 빌드
-cargo binstall --git https://github.com/polarian/argus argus-tui   # 미리빌드 (cargo-binstall 필요)
+# 미리 빌드된 바이너리, Rust 불필요 — macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/polarian/argus/master/install.sh | sh
 ```
 
-`cargo binstall`은 [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall)이 먼저 설치돼 있어야 합니다(`cargo install cargo-binstall`). 또는 `cargo install --path .`로 로컬 빌드(또는 [Releases](https://github.com/polarian/argus/releases)에서 tar.gz). 바이너리를 CLI로 받으므로 **macOS가 격리하지 않습니다 — 서명·공증 불필요.**
+`cargo binstall`은 [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall)이 먼저 설치돼 있어야 합니다(`cargo install cargo-binstall`). 최신 개발본은 `cargo install --git https://github.com/polarian/argus`. 또는 [Releases](https://github.com/polarian/argus/releases)에서 tar.gz. 바이너리를 CLI로 받으므로 **macOS가 격리하지 않습니다 — 서명·공증 불필요.**
 
 > **백엔드 CLI**는 쓰는 쪽만 별도 설치: GitHub은 [`gh`](https://cli.github.com/), Bitbucket은 [`bkt`](https://github.com/avivsinai/bitbucket-cli). 최초 실행 시 argus가 설정을 안내합니다.
 
-**업데이트:** 새 릴리스가 있으면 `⬆ vX.Y.Z 사용 가능` 배너가 뜹니다. `cargo install-update -a` · `brew upgrade` · 설치기 재실행으로 갱신.
+**업데이트:** 새 릴리스가 있으면 `⬆ vX.Y.Z 사용 가능` 배너가 뜹니다. `cargo install-update -a`(cargo/binstall 설치) 또는 curl 설치기 재실행으로 갱신.
 
 ## 사용법
 
