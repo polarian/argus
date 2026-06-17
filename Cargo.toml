@@ -1,0 +1,47 @@
+[package]
+name = "argus"
+version = "0.1.2"
+edition = "2024"
+description = "Real-time GitHub/Bitbucket repository monitoring TUI, powered by the gh/bkt CLIs"
+license = "MIT"
+repository = "https://github.com/polarian/argus"
+readme = "README.md"
+keywords = ["tui", "github", "bitbucket", "monitoring", "ci"]
+categories = ["command-line-utilities"]
+
+# The project is named argus, but the runnable command is built as the short `arg`.
+[[bin]]
+name = "arg"
+path = "src/main.rs"
+
+# cargo-binstall: map each Rust target to the release asset built by
+# .github/workflows/release.yml (arg-<version>-<os>-<arch>.tar.gz on the `v<version>`
+# tag). Lets users `cargo binstall` the prebuilt binary and `cargo install-update`
+# to auto-update — no signing needed (CLI-fetched, so macOS doesn't quarantine it).
+# The static musl Linux binaries also serve gnu hosts.
+[package.metadata.binstall]
+pkg-fmt = "tgz"
+bin-dir = "arg{ binary-ext }"
+
+[package.metadata.binstall.overrides.aarch64-apple-darwin]
+pkg-url = "{ repo }/releases/download/v{ version }/arg-{ version }-darwin-arm64{ archive-suffix }"
+[package.metadata.binstall.overrides.x86_64-apple-darwin]
+pkg-url = "{ repo }/releases/download/v{ version }/arg-{ version }-darwin-amd64{ archive-suffix }"
+[package.metadata.binstall.overrides.x86_64-unknown-linux-musl]
+pkg-url = "{ repo }/releases/download/v{ version }/arg-{ version }-linux-amd64{ archive-suffix }"
+[package.metadata.binstall.overrides.x86_64-unknown-linux-gnu]
+pkg-url = "{ repo }/releases/download/v{ version }/arg-{ version }-linux-amd64{ archive-suffix }"
+[package.metadata.binstall.overrides.aarch64-unknown-linux-musl]
+pkg-url = "{ repo }/releases/download/v{ version }/arg-{ version }-linux-arm64{ archive-suffix }"
+[package.metadata.binstall.overrides.aarch64-unknown-linux-gnu]
+pkg-url = "{ repo }/releases/download/v{ version }/arg-{ version }-linux-arm64{ archive-suffix }"
+
+[dependencies]
+chrono = { version = "0.4.45", features = ["clock"] }
+crossterm = "0.29.0"
+pulldown-cmark = { version = "0.13.4", default-features = false }
+ratatui = "0.30.1"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.150"
+tokio = { version = "1.52.3", features = ["full"] }
+toml = "1.1.2"

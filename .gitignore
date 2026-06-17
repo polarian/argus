@@ -1,0 +1,6 @@
+/target
+/target-linux
+/dist
+.DS_Store
+/CLAUDE.md
+/ROADMAP.md

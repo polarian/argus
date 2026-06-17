@@ -1,0 +1,27 @@
+name: ci
+
+# Quality gate on every push to master and on pull requests: formatting,
+# lints (warnings denied), and the test suite. No network/gh calls in tests.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add toolchain components
+        run: rustup component add clippy rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - name: Format
+        run: cargo fmt --all --check
+      - name: Clippy
+        run: cargo clippy --all-targets -- -D warnings
+      - name: Test
+        run: cargo test --all

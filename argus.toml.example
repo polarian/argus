@@ -1,0 +1,24 @@
+# argus config example — copy to `argus.toml` (or ~/.config/argus/config.toml) to use.
+# All values are optional, and CLI arguments always take precedence.
+
+# Default repository to monitor. If omitted, inferred from the current directory's git remote.
+repo = "cli/cli"
+
+# Auto-refresh interval (seconds). Default 15, minimum 2.
+poll_secs = 10
+
+# Number of items fetched/shown per panel. Default 20, range 1–100.
+limit = 30
+
+# Color theme. default · nord · catppuccin-mocha · dracula · tokyo-night
+theme = "catppuccin-mocha"
+
+# Data source backend: github (gh) · bitbucket (bkt). Default github.
+backend = "github"
+
+# UI language: en · ko. If omitted, auto-detected from the system locale (fallback en).
+lang = "en"
+
+# Check GitHub for a newer release on startup and show a header banner. Default true.
+# (Also disableable with the ARGUS_NO_UPDATE_CHECK env var.)
+update_check = true
