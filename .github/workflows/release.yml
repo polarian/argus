@@ -48,7 +48,7 @@ jobs:
             os: ubuntu-latest
             slug: linux-arm64
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install Rust target
         run: rustup target add ${{ matrix.target }}
       - name: Resolve version (tag without leading v)
