@@ -446,7 +446,12 @@ impl App {
 
     /// Whether any workflow run is in progress (condition for showing the header spinner).
     pub fn has_active_runs(&self) -> bool {
-        self.runs.items.iter().any(|r| r.status != "completed")
+        // `waiting` is a manual/approval gate (an indefinite pause), not active work — exclude it so
+        // a long-paused run doesn't keep the header spinner going forever.
+        self.runs
+            .items
+            .iter()
+            .any(|r| r.status != "completed" && r.status != "waiting")
     }
 
     /// Handles terminal events such as key presses/resize.

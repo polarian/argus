@@ -1,6 +1,6 @@
 [package]
 name = "argus-tui"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2024"
 description = "Real-time GitHub/Bitbucket repository monitoring TUI, powered by the gh/bkt CLIs"
 license = "MIT"

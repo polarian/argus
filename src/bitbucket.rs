@@ -104,9 +104,17 @@ fn user_to_author(user: Option<User>) -> Option<Author> {
 
 // ─── State vocabulary normalization (Bitbucket → GitHub) ─────────────────────
 
-/// pipeline `state.name` → GitHub run `status`.
-fn map_status(name: &str) -> String {
+/// pipeline `state.name` (+ in-progress `stage.name`) → GitHub run `status`.
+fn map_status(name: &str, stage: Option<&str>) -> String {
     match name {
+        // An in-progress pipeline halted at a manual step reports stage PAUSED/HALTED. That's a
+        // manual gate (an indefinite wait, not active work) — map to GitHub's `waiting` so it shows
+        // the waiting glyph instead of the running spinner and doesn't keep has_active_runs true.
+        "IN_PROGRESS" | "BUILDING" | "RUNNING"
+            if matches!(stage, Some("PAUSED") | Some("HALTED")) =>
+        {
+            "waiting".into()
+        }
         "IN_PROGRESS" | "BUILDING" | "RUNNING" => "in_progress".into(),
         "PENDING" | "PAUSED" => "queued".into(),
         // COMPLETED and all other terminal/unknown states (ERROR/STOPPED/HALTED etc.) count as 'completed'.
@@ -144,6 +152,9 @@ struct BbPipeline {
 struct PipelineState {
     #[serde(default)]
     name: String,
+    /// Sub-stage while IN_PROGRESS: RUNNING / PAUSED / HALTED. PAUSED/HALTED means the
+    /// pipeline is halted at a manual step (an indefinite gate), not actively running.
+    stage: Option<Named>,
     result: Option<Named>,
 }
 
@@ -196,7 +207,7 @@ fn pipeline_to_run(repo: &str, p: BbPipeline) -> Run {
     let state = state.unwrap_or_default();
     let target = target.unwrap_or_default();
 
-    let status = map_status(&state.name);
+    let status = map_status(&state.name, state.stage.as_ref().map(|s| s.name.as_str()));
     // Set conclusion **only on completed runs** so a leftover prior result on an in-progress run
     // isn't miscounted into the failure badge (✗N) (same as the GitHub model: conclusion only when completed).
     let conclusion = if status == "completed" {
@@ -530,7 +541,9 @@ async fn pipeline_detail(
     let pipe: BbPipeline =
         parse(&run_bkt(&["api", &format!("/repositories/{repo}/pipelines/{build}")]).await?)?;
     let state = pipe.state.unwrap_or_default();
-    let active = map_status(&state.name) != "completed";
+    let status = map_status(&state.name, state.stage.as_ref().map(|s| s.name.as_str()));
+    // `waiting` (halted at a manual step) is paused, not running — don't follow/auto-refresh it.
+    let active = status == "in_progress";
     let steps: Page<StepInfo> = parse(
         &run_bkt(&[
             "api",
@@ -550,11 +563,15 @@ async fn pipeline_detail(
 
     let mut out = String::new();
     let result = state.result.as_ref().map(|r| r.name.as_str()).unwrap_or("");
+    let stage = state.stage.as_ref().map(|s| s.name.as_str()).unwrap_or("");
     out.push_str(&format!("Pipeline #{build}\n"));
-    if result.is_empty() {
-        out.push_str(&format!("{}\n", state.name));
-    } else {
+    if !result.is_empty() {
         out.push_str(&format!("{} ({result})\n", state.name));
+    } else if !stage.is_empty() {
+        // e.g. IN_PROGRESS · PAUSED — clarifies it's halted at a manual step, not actively running.
+        out.push_str(&format!("{} · {stage}\n", state.name));
+    } else {
+        out.push_str(&format!("{}\n", state.name));
     }
     out.push_str(i18n::log_view_hint(lang));
     out.push_str("\n\n");
@@ -852,12 +869,16 @@ mod tests {
 
     #[test]
     fn maps_state_vocabulary_to_github() {
-        assert_eq!(map_status("COMPLETED"), "completed");
-        assert_eq!(map_status("IN_PROGRESS"), "in_progress");
-        assert_eq!(map_status("PENDING"), "queued");
+        assert_eq!(map_status("COMPLETED", None), "completed");
+        assert_eq!(map_status("IN_PROGRESS", None), "in_progress");
+        assert_eq!(map_status("IN_PROGRESS", Some("RUNNING")), "in_progress");
+        assert_eq!(map_status("PENDING", None), "queued");
+        // In-progress halted at a manual step (stage PAUSED/HALTED) → waiting, not running.
+        assert_eq!(map_status("IN_PROGRESS", Some("PAUSED")), "waiting");
+        assert_eq!(map_status("IN_PROGRESS", Some("HALTED")), "waiting");
         // Unknown/terminal states fall back to completed (prevents permanent active).
-        assert_eq!(map_status("ERROR"), "completed");
-        assert_eq!(map_status("HALTED"), "completed");
+        assert_eq!(map_status("ERROR", None), "completed");
+        assert_eq!(map_status("HALTED", None), "completed");
         assert_eq!(map_conclusion("SUCCESSFUL"), "success");
         assert_eq!(map_conclusion("FAILED"), "failure");
         assert_eq!(map_conclusion("STOPPED"), "cancelled");
@@ -903,6 +924,12 @@ mod tests {
         let r3 = pipeline_to_run("ws/repo", serde_json::from_slice(json3).unwrap());
         assert_eq!(r3.display_title, "real subject");
         assert_eq!(r3.conclusion.as_deref(), Some("success"));
+
+        // In-progress but halted at a manual step (stage PAUSED) → waiting, not in_progress.
+        let json4 = br#"{"build_number":583,"state":{"name":"IN_PROGRESS","type":"pipeline_state_in_progress","stage":{"name":"PAUSED","type":"pipeline_state_in_progress_paused"}},"target":{"ref_name":"master"},"trigger":{"name":"PUSH"},"created_on":"2026-01-01T00:00:00Z"}"#;
+        let r4 = pipeline_to_run("ws/repo", serde_json::from_slice(json4).unwrap());
+        assert_eq!(r4.status, "waiting");
+        assert_eq!(r4.conclusion, None);
     }
 
     #[test]
