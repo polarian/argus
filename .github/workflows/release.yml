@@ -63,3 +63,15 @@ jobs:
           archive: arg-${{ env.VERSION }}-${{ matrix.slug }}   # e.g. arg-0.1.2-darwin-arm64
           checksum: sha256
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  # Publish the crate to crates.io after the release binaries are up (so a
+  # published version always has matching binstall assets). Needs CRATES_IO_TOKEN.
+  publish-crate:
+    needs: upload
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: cargo publish
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+        run: cargo publish
