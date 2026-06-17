@@ -24,8 +24,6 @@ cargo install --git https://github.com/polarian/argus              # build from 
 cargo binstall --git https://github.com/polarian/argus argus-tui   # prebuilt (needs cargo-binstall)
 ```
 
-> ⚠️ Not published to crates.io yet — install via the **`--git` URL above**. (The crate is `argus-tui`; the bare `argus` on crates.io is an unrelated project.)
-
 `cargo binstall` requires [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) (`cargo install cargo-binstall`). Or build locally with `cargo install --path .`, or grab a tarball from [Releases](https://github.com/polarian/argus/releases). Binaries are CLI-fetched, so **macOS doesn't quarantine them — no signing/notarization needed.**
 
 > **Backend CLI** is installed separately — only the one you use: [`gh`](https://cli.github.com/) for GitHub, [`bkt`](https://github.com/avivsinai/bitbucket-cli) for Bitbucket. argus guides setup on first run.
