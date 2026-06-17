@@ -2,6 +2,11 @@
 
 [English](README.md) · **한국어**
 
+[![crates.io](https://img.shields.io/crates/v/argus-tui.svg)](https://crates.io/crates/argus-tui)
+[![CI](https://github.com/polarian/argus/actions/workflows/ci.yml/badge.svg)](https://github.com/polarian/argus/actions/workflows/ci.yml)
+[![Downloads](https://img.shields.io/crates/d/argus-tui.svg)](https://crates.io/crates/argus-tui)
+[![License: MIT](https://img.shields.io/crates/l/argus-tui.svg)](LICENSE)
+
 `gh` / `bkt` CLI를 백엔드로 써서 GitHub·Bitbucket 저장소의 **Actions / Pull Requests / Issues / Commits** 를 터미널에서 실시간으로 지켜보는 대시보드. 주기적으로 폴링하며 신규·변경 항목을 `●`로 표시합니다.
 
 ## 기능

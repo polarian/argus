@@ -2,6 +2,11 @@
 
 **English** · [한국어](README.ko.md)
 
+[![crates.io](https://img.shields.io/crates/v/argus-tui.svg)](https://crates.io/crates/argus-tui)
+[![CI](https://github.com/polarian/argus/actions/workflows/ci.yml/badge.svg)](https://github.com/polarian/argus/actions/workflows/ci.yml)
+[![Downloads](https://img.shields.io/crates/d/argus-tui.svg)](https://crates.io/crates/argus-tui)
+[![License: MIT](https://img.shields.io/crates/l/argus-tui.svg)](LICENSE)
+
 A terminal dashboard that watches a GitHub or Bitbucket repo's **Actions / Pull Requests / Issues / Commits** in real time, using the `gh` / `bkt` CLI as its backend. It polls on an interval and marks new/changed items with `●`.
 
 ## Features
