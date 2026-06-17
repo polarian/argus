@@ -20,11 +20,11 @@ A terminal dashboard that watches a GitHub or Bitbucket repo's **Actions / Pull 
 curl -fsSL https://raw.githubusercontent.com/polarian/argus/master/install.sh | sh
 
 # With Cargo
-cargo binstall argus                                    # prebuilt (fast)
+cargo binstall argus                                    # prebuilt (needs cargo-binstall)
 cargo install --git https://github.com/polarian/argus   # from source
 ```
 
-Or build locally with `cargo install --path .` (or grab a tarball from [Releases](https://github.com/polarian/argus/releases)). Binaries are CLI-fetched, so **macOS doesn't quarantine them — no signing/notarization needed.**
+`cargo binstall` requires [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) (`cargo install cargo-binstall`, or via Homebrew / its own installer). Or build locally with `cargo install --path .` (or grab a tarball from [Releases](https://github.com/polarian/argus/releases)). Binaries are CLI-fetched, so **macOS doesn't quarantine them — no signing/notarization needed.**
 
 > **Backend CLI** is installed separately — only the one you use: [`gh`](https://cli.github.com/) for GitHub, [`bkt`](https://github.com/avivsinai/bitbucket-cli) for Bitbucket. argus guides setup on first run.
 
