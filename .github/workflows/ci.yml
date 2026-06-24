@@ -15,7 +15,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Add toolchain components
         run: rustup component add clippy rustfmt
       - uses: Swatinem/rust-cache@v2
