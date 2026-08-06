@@ -1179,7 +1179,7 @@ pub async fn fetch_detail(
             .await?;
             let d: PrDetail = parse(&out)?;
             // Inline code review threads (body still shown on failure).
-            let thread_path = format!("repos/{}/pulls/{}/comments?per_page=100", &req.repo, number);
+            let thread_path = format!("repos/{}/pulls/{}/comments?per_page=100", req.repo, number);
             let threads: Vec<ReviewComment> = match run_gh(&["api", &thread_path]).await {
                 Ok(b) => serde_json::from_slice(&b).unwrap_or_default(),
                 Err(_) => Vec::new(),
